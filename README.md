@@ -1,6 +1,6 @@
 # Mini-project-4DESA
 
-Project realized by Alexis GANGNEUX and Julien Boisard
+Project realized by Alexis GANGNEUX and Julien Boisgard
 
 We had using https://learn.microsoft.com/en-us/azure/developer/python/sdk/azure-sdk-library-package-index
 
