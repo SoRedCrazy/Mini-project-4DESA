@@ -23,26 +23,27 @@ Set-ExecutionPolicy Unrestricted -Scope Proces
 
 az login 
 
+#general
 $location = 'eastus'
 $resourceGroupName = 'media-social'
 $storageAccountName = 'mediasocialstorageag37'
 
+#contenair
 $contenaire_pictures='pictures'
 $contenaire_video='video'
 
+#database
 $accountServerDB='mediadb4deas'
 $ServerDBlogin='azurdbmedia'
 $ServerDBpassword='/Password37'
 $databaseName='mediasocial'
 
+#Web app
 $appName="media-social-webapp"
 $planName="media-social-plan"
+$gitrepo="https://github.com/SoRedCrazy/Mini-project-4DESA.git"
 
-# $subscription=''
-# #get subs
-# az account list --output table
-# #set subs
-# az account set --subscription $subscription
+
 # Create a resource group
 az group create `
   --name $resourceGroupName `
@@ -105,14 +106,22 @@ az webapp create `
     -g $resourceGroupName `
     --plan $planName
 
-$gitrepo="https://github.com/SoRedCrazy/Mini-project-4DESA.git"
-
 az webapp deployment source config `
     -n $appName `
     -g $resourceGroupName `
     --repo-url $gitrepo `
     --branch main `
     --manual-integration
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings AZURE_SQL_CONNECTIONSTRING=$connectionstringdb
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings AZURE_STORAGE_CONNECTION_STRING=$connectionstring
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
