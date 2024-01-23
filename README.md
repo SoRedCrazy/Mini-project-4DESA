@@ -35,6 +35,9 @@ $ServerDBlogin='azurdbmedia'
 $ServerDBpassword='/Password37'
 $databaseName='mediasocial'
 
+$appName="media-social-webapp"
+$planName="media-social-plan"
+
 # $subscription=''
 # #get subs
 # az account list --output table
@@ -90,6 +93,26 @@ az sql db create --name $databaseName `
 
 #Ge string of connection database
 $connectionstringdb = az sql db show-connection-string --client odbc --name $databaseName --server $accountServerDB
+
+az appservice plan create `
+    -n $planName `
+    -g $resourceGroupName `
+    -l $location `
+    --sku B1
+
+az webapp create `
+    -n $appName `
+    -g $resourceGroupName `
+    --plan $planName
+
+$gitrepo="https://github.com/SoRedCrazy/Mini-project-4DESA.git"
+
+az webapp deployment source config `
+    -n $appName `
+    -g $resourceGroupName `
+    --repo-url $gitrepo `
+    --branch main `
+    --manual-integration
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
