@@ -104,7 +104,9 @@ az appservice plan create `
 az webapp create `
     -n $appName `
     -g $resourceGroupName `
-    --plan $planName
+    --plan $planName `
+    --runtime "PYTHON:3.11"
+    
 
 az webapp deployment source config `
     -n $appName `
