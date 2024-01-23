@@ -50,16 +50,20 @@ az configure --defaults group=$resourceGroupName
 
 # Create the storage account
 az storage account create `
-    --name $storageAccountName `
-    --resource-group $resourceGroupName `
-    --location $location `
-    --sku 'Standard_LRS' `
-    --kind 'StorageV2' `
-    --allow-blob-public-access false 
+     --name $storageAccountName `
+     --resource-group $resourceGroupName `
+     --location $location `
+     --sku 'Standard_LRS' `
+     --kind 'StorageV2' `
+     --allow-blob-public-access false
+
+$response = az storage account show-connection-string -g $resourceGroupName -n $storageAccountName
+$connectionstring =  $response | ConvertFrom-Json
 
 #create contenair
 az storage container create --name $contenaire_pictures `
-                            --public-access blob
+                            --public-access blob `
+                            --connection-string $connectionstring.connectionString `
 
 #echo string connection of contenaire
 echo $AZURE_STORAGE_CONNECTION_STRING
