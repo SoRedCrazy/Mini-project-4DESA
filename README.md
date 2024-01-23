@@ -30,11 +30,10 @@ $storageAccountName = 'mediasocialstorageag37'
 $contenaire_pictures='pictures'
 $contenaire_video='video'
 
-$accountNamecosmos='mediadb4deas'
+$accountServerDB='mediadb4deas'
+$ServerDBlogin='azurdbmedia'
+$ServerDBpassword='/Password37'
 $databaseName='mediasocial'
-$containerName='media'
-$partitionKey='/media'
-$throughput=400
 
 # $subscription=''
 # #get subs
@@ -74,19 +73,23 @@ az storage container create --name $contenaire_video `
                             --account-name $storageAccountName `
                             --connection-string $connectionstring.connectionString 
 
-az cosmosdb create `
-    -n $accountNamecosmos `
-    -g $resourceGroupName
+#create server for the database
+az sql server create --name $accountServerDB `
+                     --resource-group $resourceGroupName `
+                     --location $location `
+                     --admin-user $ServerDBlogin `
+                     --admin-password $ServerDBpassword 
 
-az cosmosdb sql database create `
-    -a $accountNamecosmos `
-    -g $resourceGroupName `
-    -n $databaseName
+#add rules for all
+az sql server firewall-rule create -g $resourceGroupName -s $accountServerDB  -n myrule --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
-az cosmosdb sql container create `
-    -a $accountName -g $resourceGroupName `
-    -d $databaseName -n $containerName `
-    -p $partitionKey --throughput $throughput 
+#create database
+az sql db create --name $databaseName `
+                 --resource-group $resourceGroupName `
+                 --server $accountServerDB 
+
+#Ge string of connection database
+$connectionstringdb = az sql db show-connection-string --client odbc --name $databaseName --server $accountServerDB
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
