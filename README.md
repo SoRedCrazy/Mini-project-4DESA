@@ -25,7 +25,7 @@ az login
 
 $location = 'eastus'
 $resourceGroupName = 'media-social'
-$storageAccountName = 'mediasocialstorage'
+$storageAccountName = 'mediasocialstorageag37'
 
 $contenaire_pictures='pictures'
 $contenaire_video='video'
@@ -68,6 +68,11 @@ az storage container create --name $contenaire_pictures `
 #echo string connection of contenaire
 echo $AZURE_STORAGE_CONNECTION_STRING
 
+#remove all ressource 
+$resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
 
+foreach ($resource in $resources) {
+    az resource delete --resource-group $resourceGroupName --ids $resource.id --verbose
+}
 
 ```
