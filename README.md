@@ -36,6 +36,9 @@ $containerName='media'
 $partitionKey='/media'
 $throughput=400
 
+$appName="media-social-webapp"
+$planName="media-social-plan"
+
 # $subscription=''
 # #get subs
 # az account list --output table
@@ -87,6 +90,26 @@ az cosmosdb sql container create `
     -a $accountName -g $resourceGroupName `
     -d $databaseName -n $containerName `
     -p $partitionKey --throughput $throughput 
+
+az appservice plan create `
+    -n $planName `
+    -g $resourceGroupName `
+    -l $location `
+    --sku B1
+
+az webapp create `
+    -n $appName `
+    -g $resourceGroupName `
+    --plan $planName
+
+$gitrepo="https://github.com/SoRedCrazy/Mini-project-4DESA.git"
+
+az webapp deployment source config `
+    -n $appName `
+    -g $resourceGroupName `
+    --repo-url $gitrepo `
+    --branch main `
+    --manual-integration
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
