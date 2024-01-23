@@ -29,24 +29,28 @@ $storageAccountName = 'mediasocialstorageag37'
 
 $contenaire_pictures='pictures'
 $contenaire_video='video'
-$subscription=''
-#get subs
-az account list --output table
-#set subs
-az account set --subscription $subscription
+
+$accountNamecosmos='mediadb4deas'
+$databaseName='mediasocial'
+$containerName='media'
+$partitionKey='/media'
+$throughput=400
+
+# $subscription=''
+# #get subs
+# az account list --output table
+# #set subs
+# az account set --subscription $subscription
 # Create a resource group
 az group create `
   --name $resourceGroupName `
   --location $location
-
 
 #get groups
 az group list --output table
 
 #set defaults groups
 az configure --defaults group=$resourceGroupName
-
-
 
 # Create the storage account
 az storage account create `
@@ -57,20 +61,35 @@ az storage account create `
      --kind 'StorageV2' `
      --allow-blob-public-access false
 
+#get connection string
 $response = az storage account show-connection-string -g $resourceGroupName -n $storageAccountName
 $connectionstring =  $response | ConvertFrom-Json
 
 #create contenair
 az storage container create --name $contenaire_pictures `
-                            --public-access blob `
-                            --connection-string $connectionstring.connectionString `
+                            --account-name $storageAccountName `
+                            --connection-string $connectionstring.connectionString
+#create contenair
+az storage container create --name $contenaire_video `
+                            --account-name $storageAccountName `
+                            --connection-string $connectionstring.connectionString 
 
-#echo string connection of contenaire
-echo $AZURE_STORAGE_CONNECTION_STRING
+az cosmosdb create `
+    -n $accountNamecosmos `
+    -g $resourceGroupName
+
+az cosmosdb sql database create `
+    -a $accountNamecosmos `
+    -g $resourceGroupName `
+    -n $databaseName
+
+az cosmosdb sql container create `
+    -a $accountName -g $resourceGroupName `
+    -d $databaseName -n $containerName `
+    -p $partitionKey --throughput $throughput 
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
-
 foreach ($resource in $resources) {
     az resource delete --resource-group $resourceGroupName --ids $resource.id --verbose
 }
