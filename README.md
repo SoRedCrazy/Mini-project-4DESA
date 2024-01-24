@@ -24,7 +24,7 @@ Set-ExecutionPolicy Unrestricted -Scope Proces
 az login 
 
 #general
-$location = 'eastus2'
+$location = 'westus'
 $resourceGroupName = 'media-social'
 $storageAccountName = 'mediasocialstorageag37'
 
@@ -115,6 +115,11 @@ az webapp deployment source config `
     --repo-url $gitrepo `
     --branch main `
     --manual-integration
+
+az webapp config set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --startup-file "gunicorn --bind=0.0.0.0 --timeout 600 init:app"
 
 az webapp config appsettings set `
     --resource-group $resourceGroupName `
