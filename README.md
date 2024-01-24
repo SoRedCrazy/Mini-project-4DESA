@@ -24,7 +24,7 @@ Set-ExecutionPolicy Unrestricted -Scope Proces
 az login 
 
 #general
-$location = 'eastus'
+$location = 'eastus2'
 $resourceGroupName = 'media-social'
 $storageAccountName = 'mediasocialstorageag37'
 
@@ -99,6 +99,7 @@ az appservice plan create `
     -n $planName `
     -g $resourceGroupName `
     -l $location `
+    --is-linux `
     --sku B1
 
 az webapp create `

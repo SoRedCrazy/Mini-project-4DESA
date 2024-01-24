@@ -1,2 +1,3 @@
-os
-flask
+gunicorn
+Flask
+Werkzeug
