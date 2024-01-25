@@ -9,9 +9,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "<h1>Hello Azure!</h1>"
-
-if __name__ == "__main__":
     try:
         conn = get_conn()
         cursor = conn.cursor()
@@ -29,7 +26,9 @@ if __name__ == "__main__":
     except Exception as e:
     # Table may already exist
         print(e)
+    return connection_string
 
+if __name__ == "__main__":
     app.run(debug=True)
 
 
