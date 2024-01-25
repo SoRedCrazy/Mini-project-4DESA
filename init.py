@@ -1,5 +1,5 @@
 from flask import Flask
-import pyodbc, struct
+import pyodbc, struct ,os
 from azure import identity
 
 connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
