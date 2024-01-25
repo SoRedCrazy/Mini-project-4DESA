@@ -15,7 +15,7 @@ if __name__ == "__main__":
     conn = get_conn()
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS user  (
+        CREATE TABLE IF NOT EXISTS users  (
             pseudo varchar(255) NOT NULL PRIMARY KEY,
             FirstName varchar(255) NOT NULL,
             LastName varchar(255) NOT NULL,
