@@ -12,20 +12,20 @@ def index():
     return "<h1>Hello Azure!</h1>"
 
 if __name__ == "__main__":
-     conn = get_conn()
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE user (
-                pseudo varchar(255) NOT NULL PRIMARY KEY,
-                FirstName varchar(255) NOT NULL,
-                LastName varchar(255) NOT NULL,
-                mdp varchar(255) NOT NULL,
-                private BIT NOT NULL DEFAULT 0,
-                is_admin BIT NOT NULL DEFAULT 0,
-            );
-        """)
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE user (
+            pseudo varchar(255) NOT NULL PRIMARY KEY,
+            FirstName varchar(255) NOT NULL,
+            LastName varchar(255) NOT NULL,
+            mdp varchar(255) NOT NULL,
+            private BIT NOT NULL DEFAULT 0,
+            is_admin BIT NOT NULL DEFAULT 0,
+        );
+    """)
 
-        conn.commit()
+    conn.commit()
     app.run(debug=True)
 
 

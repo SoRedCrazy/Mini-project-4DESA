@@ -24,7 +24,7 @@ Set-ExecutionPolicy Unrestricted -Scope Proces
 az login 
 
 #general
-$location = 'westus'
+$location = 'westus3'
 $resourceGroupName = 'media-social'
 $storageAccountName = 'mediasocialstorageag37'
 
@@ -82,7 +82,7 @@ az sql server create --name $accountServerDB `
                      --resource-group $resourceGroupName `
                      --location $location `
                      --admin-user $ServerDBlogin `
-                     --admin-password $ServerDBpassword 
+                     --admin-password $ServerDBpassword
 
 #add rules for all
 az sql server firewall-rule create -g $resourceGroupName -s $accountServerDB  -n myrule --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
