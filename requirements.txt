@@ -4,3 +4,4 @@ Werkzeug
 pydantic
 azure-identity
 pyodbc
+python-dotenv

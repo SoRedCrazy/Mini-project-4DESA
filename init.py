@@ -1,6 +1,6 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import pyodbc, struct ,os
-from azure import identity
+import json
 
 db = os.environ["AZURE_SQL_DB"]
 dbname = os.environ["AZURE_SQL_DBNAME"]
@@ -13,6 +13,58 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return "<h1>Hello Azure!</h1>"
+
+
+@app.route('/user', methods=['GET'])
+def get_user():
+    name = request.args.get('pseudo')
+    print(name)
+    records=[]
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+
+        if name == None :
+            cursor.execute("SELECT * FROM users;")
+        else:
+            cursor.execute("SELECT * FROM users where pseudo='"+name+"';")
+
+        records = cursor.fetchall()
+    except Exception as e:
+        print(e)
+
+    list_user=[]
+
+    for r in records:
+        temp= {
+        "pseudo": r.pseudo,
+        "firstname": r.FirstName,
+        "LastName": r.LastName,
+        "private": r.private,
+        "is_admin": r.is_admin
+        }
+        list_user.append(temp)
+    
+    return jsonify(list_user)
+
+
+@app.route('/user', methods=['POST'])
+def post_user():
+    record = json.loads(request.data)
+    records=[]
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO users (pseudo, FirstName, LastName, mdp)
+            VALUES ('SoRedCrazy5','julien','boisgard','test');
+        """)
+        cursor.commit()
+        return jsonify({"State": 201})
+    except Exception as e:
+        print(e)
+
+    return jsonify({"State": 400})
 
 @app.route("/initialisation")
 def initialisation():
