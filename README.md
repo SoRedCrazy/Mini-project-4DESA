@@ -92,9 +92,6 @@ az sql db create --name $databaseName `
                  --resource-group $resourceGroupName `
                  --server $accountServerDB 
 
-#Ge string of connection database
-$connectionstringdb = az sql db show-connection-string --client odbc --name $databaseName --server $accountServerDB
-
 az appservice plan create `
     -n $planName `
     -g $resourceGroupName `
@@ -124,7 +121,22 @@ az webapp config set `
 az webapp config appsettings set `
     --resource-group $resourceGroupName `
     --name $appName `
-    --settings AZURE_SQL_CONNECTIONSTRING=$connectionstringdb
+    --settings AZURE_SQL_DB=$accountServerDB
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings AZURE_SQL_DBNAME=$databaseName
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings AZURE_SQL_LOGINDB=$ServerDBlogin
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings AZURE_SQL_PASSWORDDB=$ServerDBpassword
 
 az webapp config appsettings set `
     --resource-group $resourceGroupName `
