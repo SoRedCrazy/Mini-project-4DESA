@@ -2,11 +2,8 @@ from flask import Flask
 import pyodbc, struct ,os
 from azure import identity
 
-# connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
-connection_string = "Driver={ODBC Driver 13 for SQL Server};Server=tcp:mediadb4deas.database.windows.net,1433;Database=mediasocial;Uid=@mediadb4deas;Pwd=/Password37;Encrypt=yes;TrustServerCertificate=no;"
+connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
 app = Flask(__name__)
-
-
 
 @app.route("/")
 def index():
@@ -26,7 +23,7 @@ def index():
         conn.commit()
     except Exception as e:
     # Table may already exist
-        print(e)
+       return str(e)
     return connection_string
 
 if __name__ == "__main__":
