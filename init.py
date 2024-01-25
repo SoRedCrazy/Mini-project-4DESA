@@ -12,13 +12,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-
     return "<h1>Hello Azure!</h1>"
 
-
-
 @app.route("/initialisation")
-def index():
+def initialisation():
     try:
         conn = get_conn()
         cursor = conn.cursor()
