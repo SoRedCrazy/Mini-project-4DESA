@@ -5,3 +5,5 @@ pydantic
 azure-identity
 pyodbc
 python-dotenv
+flask_jwt_extended
+azure.storage.blob

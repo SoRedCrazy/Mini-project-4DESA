@@ -43,6 +43,8 @@ $appName="media-social-webapp"
 $planName="media-social-plan"
 $gitrepo="https://github.com/SoRedCrazy/Mini-project-4DESA.git"
 
+#superkey 
+$superkeyapp="testtest"
 
 # Create a resource group
 az group create `
@@ -141,7 +143,12 @@ az webapp config appsettings set `
 az webapp config appsettings set `
     --resource-group $resourceGroupName `
     --name $appName `
-    --settings AZURE_STORAGE_CONNECTION_STRING=$connectionstring
+    --settings AZURE_STORAGE_CONNECTION_STRING=$connectionstring.connectionString 
+
+az webapp config appsettings set `
+    --resource-group $resourceGroupName `
+    --name $appName `
+    --settings APP_SUPER_KEY=$superkeyapp
 
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
