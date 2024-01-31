@@ -16,9 +16,14 @@ Process
 
 ```Bash 
 
+#création venv
+py -m venv .venv
 #We had creating a environ for python. using these commands for activates it.
 Set-ExecutionPolicy Unrestricted -Scope Proces
-.venv\Scripts\activate.ps1 
+.venv\Scripts\activate
+
+#installation dépendance
+pip install -r requirements.txt
 
 
 az login 

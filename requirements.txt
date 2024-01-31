@@ -7,3 +7,4 @@ pyodbc
 python-dotenv
 flask_jwt_extended
 azure.storage.blob
+flask_swagger_ui
