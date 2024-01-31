@@ -4,8 +4,12 @@ from datetime import timedelta
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from flask_swagger_ui import get_swaggerui_blueprint
+
 import pyodbc, struct ,os
 import json
+
+
 
 db = os.environ["AZURE_SQL_DB"]
 dbname = os.environ["AZURE_SQL_DBNAME"]
@@ -16,6 +20,20 @@ ACCESS_EXPIRES = timedelta(hours=1)
 
 connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:"+db+".database.windows.net,1433;Database="+dbname+";Uid="+logindb+";Pwd="+passworddb+";Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 app = Flask(__name__)
+
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = '/static/swagger.json'  # Our API url (can of course be a local resource)
+
+# Call factory function to create our blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Test application"
+    },
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 app.config["JWT_SECRET_KEY"] = os.environ["APP_SUPER_KEY"] 
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
@@ -418,7 +436,7 @@ def search():
 
 
 
-@app.route("/initialisation")
+@app.route("/initialisation", methods=['GET'])
 def initialisation():
     try:
         conn = get_conn()
