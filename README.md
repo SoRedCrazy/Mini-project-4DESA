@@ -4,7 +4,7 @@ Project realized by Alexis GANGNEUX and Julien Boisard
 
 We had using https://learn.microsoft.com/en-us/azure/developer/python/sdk/azure-sdk-library-package-index
 
-The requierements for windows are Azure-cli and func-cli
+The requierements for windows are Azure-cli , ODBC pour SQL Server 18 and func-cli
 
 Process 
 
