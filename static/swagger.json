@@ -252,11 +252,11 @@
             "type": "string",
             "example": "password"
           },
-          "firstName": {
+          "firstname": {
             "type": "string",
             "example": "John"
           },
-          "lastName": {
+          "lastname": {
             "type": "string",
             "example": "James"
           }
