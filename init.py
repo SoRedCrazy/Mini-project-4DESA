@@ -3,6 +3,7 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_cors import CORS
 
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -20,6 +21,7 @@ ACCESS_EXPIRES = timedelta(hours=1)
 
 connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:"+db+".database.windows.net,1433;Database="+dbname+";Uid="+logindb+";Pwd="+passworddb+";Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"Access-Control-Allow-Origin": "*"}})
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/swagger.json'  # Our API url (can of course be a local resource)
