@@ -6,26 +6,14 @@ We had using https://learn.microsoft.com/en-us/azure/developer/python/sdk/azure-
 
 The requierements for windows are Azure-cli , ODBC pour SQL Server 18 and func-cli
 
-Process 
+# Process of install in azure
 
 1. Create Account storage and two contenaire (Image and container)
 2. Create db and link objet with contenaire storage
 ![Alt text](/images/model_db.png "follow this model")
 3. Create contenaire with ours flask app
 
-
 ```Bash 
-
-#création venv
-py -m venv .venv
-#We had creating a environ for python. using these commands for activates it.
-Set-ExecutionPolicy Unrestricted -Scope Proces
-.venv\Scripts\activate
-
-#installation dépendance
-pip install -r requirements.txt
-
-
 az login 
 
 #general
@@ -155,6 +143,55 @@ az webapp config appsettings set `
     --name $appName `
     --settings APP_SUPER_KEY=$superkeyapp
 
+```
+
+# create local environement
+
+
+```Bash 
+#clone le projet
+git clone https://github.com/SoRedCrazy/Mini-project-4DESA.git
+cd Mini-project-4DESA
+
+
+#create venv
+py -m venv .venv
+#active venv
+Set-ExecutionPolicy Unrestricted -Scope Proces
+.venv\Scripts\activate
+
+#install librarie
+pip install -r requirements.txt
+
+```
+
+Create .env with variables 
+```Bash 
+FLASK_APP = "init.py"
+FLASK_ENV = "development"
+FLASK_RUN_PORT = "5000"
+AZURE_SQL_DB = ""
+AZURE_SQL_DBNAME = ''
+AZURE_SQL_LOGINDB = ""
+AZURE_SQL_PASSWORDDB = ''
+APP_SUPER_KEY=""
+AZURE_STORAGE_CONNECTION_STRING=""
+```
+
+Lauck the application
+
+```Bash 
+#run
+flask run
+
+```
+
+# Delete resources in azure
+
+```Bash 
+az login 
+#general
+$resourceGroupName = 'media-social'
 #remove all ressource 
 $resources = az resource list --resource-group $resourceGroupName | ConvertFrom-Json
 foreach ($resource in $resources) {
