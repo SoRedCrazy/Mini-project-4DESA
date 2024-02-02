@@ -1,6 +1,6 @@
 # Mini-project-4DESA
 
-Project realized by Alexis GANGNEUX and Julien Boisard
+Project realized by Alexis GANGNEUX , Mathys GAGNER and Julien BOISGARD
 
 We had using https://learn.microsoft.com/en-us/azure/developer/python/sdk/azure-sdk-library-package-index
 
@@ -11,7 +11,7 @@ The requierements for windows are Azure-cli , ODBC pour SQL Server 18 and func-c
 1. Create Account storage and two contenaire (Image and container)
 2. Create db and link objet with contenaire storage
 ![Alt text](/images/model_db.png "follow this model")
-3. Create contenaire with ours flask app
+3. Create webapp with our flask app
 
 ```Bash 
 az login 
@@ -145,14 +145,13 @@ az webapp config appsettings set `
 
 ```
 
-# create local environement
+# Create local environement
 
 
 ```Bash 
 #clone le projet
 git clone https://github.com/SoRedCrazy/Mini-project-4DESA.git
 cd Mini-project-4DESA
-
 
 #create venv
 py -m venv .venv
@@ -165,7 +164,7 @@ pip install -r requirements.txt
 
 ```
 
-Create .env with variables 
+Create .env with completed variables 
 ```Bash 
 FLASK_APP = "init.py"
 FLASK_ENV = "development"
@@ -178,7 +177,7 @@ APP_SUPER_KEY=""
 AZURE_STORAGE_CONNECTION_STRING=""
 ```
 
-Lauck the application
+Lauch the application
 
 ```Bash 
 #run
