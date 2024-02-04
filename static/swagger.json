@@ -15,6 +15,14 @@
     {
       "name": "user",
       "description": "Operations about user"
+    },
+    {
+      "name": "post",
+      "description": "Operations about post"
+    },
+    {
+      "name": "comment",
+      "description": "Operations about comment"
     }
   ],
   "paths": {
@@ -178,6 +186,256 @@
           }
         }
       }
+    },
+    "/post": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "post"
+        ],
+        "summary": "création post",
+        "description": "création post",
+        "operationId": "postcreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "post"
+        ],
+        "summary": "get post from pseudo",
+        "description": "",
+        "operationId": "getpostpseudo",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "post"
+        ],
+        "summary": "Update post",
+        "description": "update",
+        "operationId": "updatePost",
+        "requestBody": {
+          "description": "Update an existent user in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "post"
+        ],
+        "summary": "Delete post",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deletePost",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/comment": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "comment"
+        ],
+        "summary": "création comment",
+        "description": "création comment",
+        "operationId": "commentcreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "comment"
+        ],
+        "summary": "get comment from pseudo",
+        "description": "",
+        "operationId": "getcommentpseudo",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "comment"
+        ],
+        "summary": "Update comment",
+        "description": "update",
+        "operationId": "updatecomment",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "comment"
+        ],
+        "summary": "Delete comment",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deletecomment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -234,6 +492,51 @@
           "password": {
             "type": "string",
             "example": "password"
+          }
+        }
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "commentaire"
+          }
+        }
+      },
+      "PostPut": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type_post": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "CommentPut": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
           }
         }
       }
