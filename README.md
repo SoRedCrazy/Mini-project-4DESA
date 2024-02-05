@@ -60,7 +60,7 @@ az storage account create `
      --allow-blob-public-access false
 
 #get connection string
-$response = az storage account show-connection-string -g $resourceGroupName -n $storageAccountName
+$response = az storage account show-connection-string -g $resourceGroupName -n $storageAccountName -o json
 $connectionstring =  $response | ConvertFrom-Json
 
 #create contenair
