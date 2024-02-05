@@ -238,7 +238,7 @@ def get_picture():
 @app.route('/picture', methods=['DELETE'])
 @jwt_required()
 def delete_picture():
-    uid = request.json.get("id", None)
+    uid = request.args.get("id", None)
 
     current_user_id = get_jwt_identity()
     try:
@@ -311,7 +311,7 @@ def get_video():
 @app.route('/video', methods=['DELETE'])
 @jwt_required()
 def delete_video():
-    uid = request.json.get("id", None)
+    uid = request.args.get("id", None)
 
     current_user_id = get_jwt_identity()
     try:
@@ -404,7 +404,7 @@ def put_post():
 @app.route('/post', methods=['DELETE'])
 @jwt_required()
 def delete_post():
-    uid = request.json.get("id", None)
+    uid = request.args.get("id", None)
 
     current_user_id = get_jwt_identity()
     try:
@@ -514,7 +514,7 @@ def put_comment():
 @app.route('/comment', methods=['DELETE'])
 @jwt_required()
 def delete_comment():
-    uid = request.json.get("id", None)
+    uid = request.args.get("id", None)
 
     current_user_id = get_jwt_identity()
     try:
