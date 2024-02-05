@@ -495,10 +495,15 @@
         "operationId": "picturecreate",
         "requestBody": {
           "content": {
-            "image/png": {
+            "multipart/form-data": {
               "schema": {
-                "type": "string",
-                "format": "binary"
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
