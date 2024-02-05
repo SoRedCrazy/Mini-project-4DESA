@@ -13,6 +13,10 @@
   ],
   "tags": [
     {
+      "name": "tools",
+      "description": "tools API ( initialisation / login / search )"
+    },
+    {
       "name": "user",
       "description": "Operations about user"
     },
@@ -23,17 +27,56 @@
     {
       "name": "comment",
       "description": "Operations about comment"
+    },
+    {
+      "name": "picture",
+      "description": "Operations about picture"
+    },
+    {
+      "name": "video",
+      "description": "Operations about video"
     }
   ],
   "paths": {
     "/initialisation": {
       "get": {
         "tags": [
-          "user"
+          "tools"
         ],
         "summary": "Initialisation de la bdd",
         "description": "deploie la bdd",
         "operationId": "initbdd",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "tools"
+        ],
+        "summary": "search",
+        "description": "search",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": "successful operation"
@@ -156,7 +199,7 @@
     "/login": {
       "post": {
         "tags": [
-          "user"
+          "tools"
         ],
         "summary": "login user",
         "description": "login",
@@ -419,6 +462,188 @@
         "summary": "Delete comment",
         "description": "This can only be done by the logged in user.",
         "operationId": "deletecomment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/picture": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "picture"
+        ],
+        "summary": "création picture",
+        "description": "création picture",
+        "operationId": "picturecreate",
+        "requestBody": {
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "picture"
+        ],
+        "summary": "get pictures from pseudo",
+        "description": "",
+        "operationId": "getpicturepseudo",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "picture"
+        ],
+        "summary": "Delete picture",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deletepicture",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/video": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "video"
+        ],
+        "summary": "création video",
+        "description": "création video",
+        "operationId": "videocreate",
+        "requestBody": {
+          "content": {
+            "video": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "video"
+        ],
+        "summary": "get video from pseudo",
+        "description": "",
+        "operationId": "getvideo",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "video"
+        ],
+        "summary": "Delete video",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deletevideo",
         "parameters": [
           {
             "name": "id",
