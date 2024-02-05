@@ -7,6 +7,8 @@ from flask_cors import CORS
 
 from flask_swagger_ui import get_swaggerui_blueprint
 
+from azure.storage.blob import BlobServiceClient
+
 import pyodbc, struct ,os
 import json
 
@@ -22,6 +24,22 @@ ACCESS_EXPIRES = timedelta(hours=1)
 connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:"+db+".database.windows.net,1433;Database="+dbname+";Uid="+logindb+";Pwd="+passworddb+";Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"Access-Control-Allow-Origin": "*"}})
+
+picture_container_name = "pictures"
+video_container_name = "video"
+
+blob_service_client = BlobServiceClient.from_connection_string(conn_str=os.getenv('AZURE_STORAGE_CONNECTION_STRING'))
+try:
+    picture_container_client = blob_service_client.get_container_client(container=picture_container_name)
+    picture_container_client.get_container_properties()
+except Exception as e:
+    picture_container_client = blob_service_client.create_container(picture_container_name)
+
+try:
+    video_container_client = blob_service_client.get_container_client(container=video_container_name)
+    video_container_client.get_container_properties()
+except Exception as e:
+    video_container_client = blob_service_client.create_container(video_container_name)
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/swagger.json'  # Our API url (can of course be a local resource)
@@ -164,6 +182,149 @@ def delte_user():
 
     return jsonify({"State": 400})
 
+@app.route('/picture', methods=['POST'])
+@jwt_required()
+def post_picture():
+    current_user_id = get_jwt_identity()
+    try:
+        fichier = request.files['file']
+        nomfichier = fichier.filename.replace(" ", "")
+        blob_client = picture_container_client.get_blob_client(nomfichier)
+        blob_client.upload_blob(nomfichier)
+        name = "https://mediasocialstorageag37.blob.core.windows.net/pictures/" + nomfichier
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO pictures (name, users)
+            VALUES ('"""+name+"""','"""+current_user_id+"""');
+        """)
+        cursor.commit()
+        
+        return jsonify({"State": 201})
+    except Exception as e:
+        print(e)
+        return jsonify({"State": 400})
+
+@app.route('/picture', methods=['GET'])
+@jwt_required()
+def get_picture():
+    name = request.args.get('pseudo')
+    records=[]
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+
+        if name == None :
+            cursor.execute("SELECT * FROM pictures;")
+        elif not is_private(name):
+            cursor.execute("SELECT * FROM pictures users='"+name+"';")
+
+        records = cursor.fetchall()
+    except Exception as e:
+        print(e)
+
+    list_post=[]
+    for r in records:
+        temp= {
+        "id" : r.id,
+        "post": r.name,
+        "author": r.users
+        }
+        list_post.append(temp)
+    
+    return jsonify(list_post)
+    
+@app.route('/picture', methods=['DELETE'])
+@jwt_required()
+def delete_picture():
+    uid = request.json.get("id", None)
+
+    current_user_id = get_jwt_identity()
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM pictures
+            WHERE users='"""+current_user_id+"""' and id= '"""+uid+"""'
+        """)
+        cursor.commit()
+        return jsonify({"State": 201})
+    except Exception as e:
+        print(e)
+
+    return jsonify({"State": 400})
+    
+@app.route('/video', methods=['POST'])
+@jwt_required()
+def post_video():
+    current_user_id = get_jwt_identity()
+    try:
+        fichier = request.files['file']
+        nomfichier = fichier.filename.replace(" ", "")
+        blob_client = video_container_client.get_blob_client(nomfichier)
+        blob_client.upload_blob(nomfichier)
+        name = "https://mediasocialstorageag37.blob.core.windows.net/video/" + nomfichier
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO video (name, users)
+            VALUES ('"""+name+"""','"""+current_user_id+"""');
+        """)
+        cursor.commit()
+        
+        return jsonify({"State": 201})
+    except Exception as e:
+        print(e)
+        return jsonify({"State": 400})
+        
+@app.route('/video', methods=['GET'])
+@jwt_required()
+def get_video():
+    name = request.args.get('pseudo')
+    records=[]
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+
+        if name == None :
+            cursor.execute("SELECT * FROM video;")
+        elif not is_private(name):
+            cursor.execute("SELECT * FROM video users='"+name+"';")
+
+        records = cursor.fetchall()
+    except Exception as e:
+        print(e)
+
+    list_post=[]
+    for r in records:
+        temp= {
+        "id" : r.id,
+        "post": r.name,
+        "author": r.users
+        }
+        list_post.append(temp)
+    
+    return jsonify(list_post)
+    
+@app.route('/video', methods=['DELETE'])
+@jwt_required()
+def delete_video():
+    uid = request.json.get("id", None)
+
+    current_user_id = get_jwt_identity()
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM video
+            WHERE users='"""+current_user_id+"""' and id= '"""+uid+"""'
+        """)
+        cursor.commit()
+        return jsonify({"State": 201})
+    except Exception as e:
+        print(e)
+
+    return jsonify({"State": 400})
 
 @app.route('/post', methods=['GET'])
 @jwt_required()
