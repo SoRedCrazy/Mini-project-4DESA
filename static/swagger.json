@@ -71,7 +71,7 @@
             "name": "pseudo",
             "in": "query",
             "description": "",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -701,7 +701,7 @@
         "properties": {
           "private": {
             "type": "string",
-            "example": true
+            "example": "true"
           },
           "password": {
             "type": "string",

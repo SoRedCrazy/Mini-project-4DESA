@@ -219,6 +219,8 @@ def get_picture():
             cursor.execute("SELECT * FROM pictures;")
         elif not is_private(name):
             cursor.execute("SELECT * FROM pictures users='"+name+"';")
+        else:
+            return jsonify({"Error": "User is private"})
 
         records = cursor.fetchall()
     except Exception as e:
@@ -292,6 +294,8 @@ def get_video():
             cursor.execute("SELECT * FROM video;")
         elif not is_private(name):
             cursor.execute("SELECT * FROM video users='"+name+"';")
+        else:
+            return jsonify({"Error": "User is private"})
 
         records = cursor.fetchall()
     except Exception as e:
@@ -341,7 +345,8 @@ def get_post():
             cursor.execute("SELECT * FROM post;")
         elif not is_private(name):
             cursor.execute("SELECT * FROM post WHERE users='"+name+"';")
-
+        else:
+            return jsonify({"Error": "User is private"})
         records = cursor.fetchall()
     except Exception as e:
         print(e)
@@ -542,15 +547,14 @@ def delete_comment():
 @jwt_required()
 def search():
     results={"post":[], "pictures":[], "movies":[]}
-    pseudo = request.json.get("pseudo", None)
+    pseudo = request.args.get("pseudo", None)
 
-    if not is_private(pseudo):
+    if is_exist(pseudo) and not is_private(pseudo):
         records=[]
         try:
             conn = get_conn()
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM post WHERE users='"+pseudo+"';")
-            cursor.commit()
             records = cursor.fetchall()
         except Exception as e:
             print(e)
@@ -567,7 +571,6 @@ def search():
             conn = get_conn()
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM pictures WHERE users='"+pseudo+"';")
-            cursor.commit()
             records = cursor.fetchall()
         except Exception as e:
             print(e)
@@ -584,7 +587,6 @@ def search():
             conn = get_conn()
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM video WHERE users='"+pseudo+"';")
-            cursor.commit()
             records = cursor.fetchall()
         except Exception as e:
             print(e)
@@ -596,8 +598,10 @@ def search():
             "author": r.users
             }
             results["movies"].append(temp)
+        return jsonify(results)
     
-    return jsonify(results)
+    else:
+        return jsonify({"Error": "User is private or doesn't exist"})
 
 
 
@@ -696,6 +700,21 @@ def initialisation():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+def is_exist(name):
+    records=[]
+    try:
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE pseudo='"+name+"';")
+        records = cursor.fetchall()
+    except Exception as e:
+        print(e)
+    if len(records)<=0:
+        return False
+    else:
+        return True
 
 
 
