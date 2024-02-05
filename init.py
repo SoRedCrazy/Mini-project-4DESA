@@ -79,7 +79,7 @@ def get_user():
         if name == None :
             cursor.execute("SELECT * FROM users;")
         else:
-            cursor.execute("SELECT * FROM users where pseudo='"+name+"';")
+            cursor.execute("SELECT * FROM users where pseudo = \'"+name+"\';")
 
         records = cursor.fetchall()
     except Exception as e:
@@ -177,7 +177,7 @@ def get_post():
         if name == None :
             cursor.execute("SELECT * FROM post;")
         elif not is_private(name):
-            cursor.execute("SELECT * FROM post users='"+name+"';")
+            cursor.execute("SELECT * FROM post WHERE users='"+name+"';")
 
         records = cursor.fetchall()
     except Exception as e:

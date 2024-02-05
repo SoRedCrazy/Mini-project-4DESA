@@ -242,7 +242,7 @@
             "name": "pseudo",
             "in": "query",
             "description": "",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -367,7 +367,7 @@
             "name": "pseudo",
             "in": "query",
             "description": "",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -521,7 +521,7 @@
           "text": {
             "type": "string"
           },
-          "type_post": {
+          "type": {
             "type": "string"
           },
           "id": {
