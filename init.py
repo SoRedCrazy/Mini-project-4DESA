@@ -203,7 +203,8 @@ def post_picture():
         return jsonify({"State": 201})
     except Exception as e:
         print(e)
-        return jsonify({"State": 400})
+        return jsonify({"State": 400,
+                        "error": str(e)})
 
 @app.route('/picture', methods=['GET'])
 @jwt_required()
@@ -251,8 +252,8 @@ def delete_picture():
         return jsonify({"State": 201})
     except Exception as e:
         print(e)
-
-    return jsonify({"State": 400})
+        return jsonify({"State": 400,
+                    "error": str(e)})
     
 @app.route('/video', methods=['POST'])
 @jwt_required()
@@ -275,7 +276,8 @@ def post_video():
         return jsonify({"State": 201})
     except Exception as e:
         print(e)
-        return jsonify({"State": 400})
+        return jsonify({"State": 400,
+                    "error": str(e)})
         
 @app.route('/video', methods=['GET'])
 @jwt_required()
