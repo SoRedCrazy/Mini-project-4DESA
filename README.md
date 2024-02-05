@@ -10,7 +10,7 @@ The requierements for windows are Azure-cli , ODBC pour SQL Server 18 and func-c
 
 1. Create Account storage and two contenaire (Image and container)
 2. Create db and link objet with contenaire storage
-![Alt text](/images/model_db.png "follow this model")
+![Alt text](/images/model_db.png)
 3. Create webapp with our flask app
 
 ```Bash 
