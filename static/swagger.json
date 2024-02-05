@@ -499,7 +499,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fileName": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -591,10 +591,15 @@
         "operationId": "videocreate",
         "requestBody": {
           "content": {
-            "video": {
+            "multipart/form-data": {
               "schema": {
-                "type": "string",
-                "format": "binary"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
