@@ -8,7 +8,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000/"
+      "url": "https://media-social-webapp.azurewebsites.net/"
+    },
+    {
+       "url": "https://localhost:5000/"
     }
   ],
   "tags": [
