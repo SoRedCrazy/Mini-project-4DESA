@@ -211,13 +211,14 @@ def post_picture():
 def get_picture():
     name = request.args.get('pseudo')
     records=[]
+    current_user_id = get_jwt_identity()
     try:
         conn = get_conn()
         cursor = conn.cursor()
 
-        if name == None :
+        if name == None:
             cursor.execute("SELECT * FROM pictures;")
-        elif not is_private(name):
+        elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM pictures users='"+name+"';")
         else:
             return jsonify({"Error": "User is private"})
@@ -285,6 +286,8 @@ def post_video():
 @jwt_required()
 def get_video():
     name = request.args.get('pseudo')
+
+    current_user_id = get_jwt_identity()
     records=[]
     try:
         conn = get_conn()
@@ -292,7 +295,7 @@ def get_video():
 
         if name == None :
             cursor.execute("SELECT * FROM video;")
-        elif not is_private(name):
+        elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM video users='"+name+"';")
         else:
             return jsonify({"Error": "User is private"})
@@ -337,13 +340,15 @@ def delete_video():
 def get_post():
     name = request.args.get('pseudo')
     records=[]
+
+    current_user_id = get_jwt_identity()
     try:
         conn = get_conn()
         cursor = conn.cursor()
 
         if name == None :
             cursor.execute("SELECT * FROM post;")
-        elif not is_private(name):
+        elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM post WHERE users='"+name+"';")
         else:
             return jsonify({"Error": "User is private"})
@@ -431,6 +436,8 @@ def delete_post():
 @jwt_required()
 def get_comment():
     name = request.args.get('pseudo')
+
+    current_user_id = get_jwt_identity()
     records=[]
     try:
         conn = get_conn()
@@ -438,7 +445,7 @@ def get_comment():
 
         if name == None :
             cursor.execute("SELECT * FROM comment;")
-        elif not is_private(name):
+        elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM comment users='"+name+"';")
 
         records = cursor.fetchall()
@@ -549,7 +556,8 @@ def search():
     results={"post":[], "pictures":[], "movies":[]}
     pseudo = request.args.get("pseudo", None)
 
-    if is_exist(pseudo) and not is_private(pseudo):
+    current_user_id
+    if is_exist(pseudo) and (not is_private(pseudo) or pseudo == current_user_id):
         records=[]
         try:
             conn = get_conn()
