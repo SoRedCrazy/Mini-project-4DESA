@@ -217,7 +217,7 @@ def get_picture():
         cursor = conn.cursor()
 
         if name == None:
-            cursor.execute("SELECT * FROM pictures;")
+            cursor.execute("SELECT * FROM pictures p INNER JOIN users u ON u.pseudo=p.users WHERE u.private=0;")
         elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM pictures users='"+name+"';")
         else:
@@ -294,7 +294,7 @@ def get_video():
         cursor = conn.cursor()
 
         if name == None :
-            cursor.execute("SELECT * FROM video;")
+            cursor.execute("SELECT * FROM video o INNER JOIN users u ON u.pseudo=o.users WHERE u.private=0;")
         elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM video users='"+name+"';")
         else:
@@ -347,7 +347,7 @@ def get_post():
         cursor = conn.cursor()
 
         if name == None :
-            cursor.execute("SELECT * FROM post;")
+            cursor.execute("SELECT * FROM post p INNER JOIN users u ON u.pseudo=p.users WHERE u.private=0;")
         elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM post WHERE users='"+name+"';")
         else:
@@ -444,7 +444,7 @@ def get_comment():
         cursor = conn.cursor()
 
         if name == None :
-            cursor.execute("SELECT * FROM comment;")
+            cursor.execute("SELECT * FROM comment c INNER JOIN users u ON u.pseudo=c.users WHERE u.private=0;;")
         elif is_exist(name) and (not is_private(name) or name == current_user_id):
             cursor.execute("SELECT * FROM comment users='"+name+"';")
 
